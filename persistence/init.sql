@@ -1,0 +1,9 @@
+CREATE DATABASE players;
+USE players;
+
+CREATE TABLE players (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(15) NOT NULL,
+    Country VARCHAR(2) NOT NULL,
+    Score INT NOT NULL
+);
