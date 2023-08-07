@@ -15,7 +15,7 @@ SpotBuzz Assessment
 
 # Installation
     1. Clone the repository to your local machine:
-        git clone https://github.com/your-username/SpotBuzz-Assessment.git  // TODO
+        git clone https://github.com/YashR461/SpotBuzz-Assessment.git
 
     2. Navigate to the project directory:
         cd SpotBuzz-Assessment
@@ -51,6 +51,10 @@ Or, you can use Docker to run the application in a container:
 The application will start and listen on localhost:8080.
 
 Use tools like  Postman to send HTTP requests to the provided endpoints (e.g., POST, PUT, DELETE, GET) to interact with the Player Score Management System.
+
+# How to test Running cloud instance
+Service is up and running on Amazon EC2 ubuntu instance at http://ec2-13-232-189-189.ap-south-1.compute.amazonaws.com:8080/
+
 
 # API Endpoints
 1. POST/players–Createsanewentryforaplayer
