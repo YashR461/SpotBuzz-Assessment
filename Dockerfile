@@ -21,4 +21,4 @@ RUN apk --no-cache add curl
 CMD ["./main"]
 
 # Expose the port your application is running on
-EXPOSE 8080
+EXPOSE 3000
