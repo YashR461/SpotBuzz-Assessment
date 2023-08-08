@@ -55,6 +55,7 @@ func UpdatePlayerByID(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
 		return
 	}
+
 	//sql query in order to update name and score attribute of a player.
 	result, err := mysql.DB.Exec("UPDATE players SET Name = ?, Score = ? WHERE ID = ?", updatedPlayer.Name, updatedPlayer.Score, playerID)
 	if err != nil {

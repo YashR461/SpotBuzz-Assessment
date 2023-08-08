@@ -14,7 +14,7 @@ const (
 	username = "root"
 	//password of user(root)
 	password = "secretpassword"
-	hostname = "mysql-container:3306"
+	hostname = "localhost:3306"
 	dbname = "players"
 )
 
