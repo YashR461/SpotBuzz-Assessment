@@ -90,7 +90,6 @@ func UpdatePlayerByID(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Player updated successfully"})
 }
 
-
 // DeletePlayerByID deletes a player by ID using a DELETE request.
 func DeletePlayerByID(c *gin.Context) {
 
