@@ -25,5 +25,5 @@ func main() {
 	router.GET("/players/random", service.GetRandomPlayer)
 
 	//Used to start the HTTP server and make it listen on a specific port, in this case, port 8080
-	router.Run("localhost:3000")
+	router.Run("0.0.0.0:3000")
 }
