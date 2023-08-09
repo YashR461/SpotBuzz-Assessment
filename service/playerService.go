@@ -1,6 +1,7 @@
 package service
 
 import (
+	"strings"
 	"strconv"
 	"net/http"
 	"fmt"
@@ -36,7 +37,6 @@ func AddPlayer(c *gin.Context) {
 
 // UpdatePlayerByID updates the name and score attribute of a player by ID using a PUT request.
 func UpdatePlayerByID(c *gin.Context) {
-
 	// Parse the playerID value from the URL parameter
 	playerID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -44,20 +44,36 @@ func UpdatePlayerByID(c *gin.Context) {
 		return
 	}
 
-	//Struct declaration of updatedPlayer having Name and Score attributes
-	var updatedPlayer struct {
-		Name string `json:"name"`
-		Score int `json:"score"`
-	}
-
-	//Used to bind or parse JSON data from an HTTP request body into a Go struct.
+	var updatedPlayer model.Player
+	// Call BindJSON to bind the received JSON to newPlayer
 	if err := c.ShouldBindJSON(&updatedPlayer); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
 		return
 	}
 
-	//sql query in order to update name and score attribute of a player.
-	result, err := mysql.DB.Exec("UPDATE players SET Name = ?, Score = ? WHERE ID = ?", updatedPlayer.Name, updatedPlayer.Score, playerID)
+	// Check for additional fields in the JSON request
+	if updatedPlayer.Country != "" || updatedPlayer.ID != 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Only name and score can be updated"})
+		return
+	}
+
+	// Create an update query based on the fields provided in the request
+	updateQuery := "UPDATE players SET"
+	updateFields := []string{}
+
+	if updatedPlayer.Name != "" {
+		updateFields = append(updateFields, "Name = '"+updatedPlayer.Name+"'")
+	}
+
+	if updatedPlayer.Score != 0 {
+		updateFields = append(updateFields, "Score = "+strconv.Itoa(updatedPlayer.Score))
+	}
+
+	// Construct the final query
+	updateQuery += " " + strings.Join(updateFields, ", ") + " WHERE ID = " + strconv.Itoa(playerID)
+
+	// Execute the update query
+	result, err := mysql.DB.Exec(updateQuery)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update player"})
@@ -68,12 +84,12 @@ func UpdatePlayerByID(c *gin.Context) {
 	if rowsAffected == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Player not found"})
 		return
-
 	}
 
 	// Returns the message
 	c.JSON(http.StatusOK, gin.H{"message": "Player updated successfully"})
 }
+
 
 // DeletePlayerByID deletes a player by ID using a DELETE request.
 func DeletePlayerByID(c *gin.Context) {
